@@ -6,10 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -40,10 +39,11 @@ public class OauthController {
             //拿到我们的code,去请求token
             //发送一个请求到
             String responseStr = oauthService.getAccessToken(code);
+            log.info("请求token返回：{}", responseStr);
             // 调用方法从map中获得返回的--》 令牌
             String token = null;
             try {
-                token = (String) JsonUtils.json2Pojo(responseStr, Map.class).get("access_token");
+                token = JsonUtils.parseResponseEntity(responseStr).get("access_token");
             } catch (Exception e) {
                 e.printStackTrace();
             }

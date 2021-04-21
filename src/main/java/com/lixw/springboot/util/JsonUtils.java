@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -29,6 +31,21 @@ public class JsonUtils {
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper.readValue(jsonString, clazz);
+    }
+
+    public static Map<String,String> parseResponseEntity(String responseEntityStr) {
+        Map<String, String> map = new HashMap<>();
+        String[] strs = responseEntityStr.split("\\&");
+        for (String str : strs) {
+            String[] mapStrs = str.split("=");
+            String value = null;
+            String key = mapStrs[0];
+            if (mapStrs.length > 1) {
+                value = mapStrs[1];
+            }
+            map.put(key, value);
+        }
+        return map;
     }
 
 }

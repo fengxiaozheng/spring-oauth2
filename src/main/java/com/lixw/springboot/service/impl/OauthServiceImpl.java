@@ -25,6 +25,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     public String getAccessToken(String code) {
         log.info("获取token");
+        log.info("接收到的code：{}", code);
         String url = "https://github.com/login/oauth/access_token?client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&code="+code+"&redirect_uri="+CALLBACK+"";
         return restTemplate.getForObject(url, String.class);
     }
@@ -32,6 +33,7 @@ public class OauthServiceImpl implements OauthService {
     @Override
     public String getUserInfo(String accessToken) {
         log.info("获取用户信息");
+        log.info("接收到的accessToken：{}", accessToken);
         String USER_INFO_URL = "https://api.github.com/user?access_token=" + accessToken;
         return restTemplate.getForObject(USER_INFO_URL, String.class);
     }
